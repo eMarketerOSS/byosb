@@ -76,14 +76,10 @@ namespace Shuttle
             var packed = new BrokeredMessage(JsonConvert.SerializeObject(msg));
             packed.Properties["type"] = msg.GetType().FullName;
 
-            Send(destination, packed);
+            var sender = QueueClient.CreateFromConnectionString(_conn, destination);
+            sender.Send(packed);
         }
 
-        public void Send(string destination, BrokeredMessage msg)
-        {
-            var sender = QueueClient.CreateFromConnectionString(_conn, destination);
-            sender.Send(msg);
-        }
 
         /* Publish Subscribe */
 
@@ -92,15 +88,10 @@ namespace Shuttle
             var packed = new BrokeredMessage(JsonConvert.SerializeObject(evt));
             packed.Properties["type"] = evt.GetType().FullName;
 
-            Publish(packed);
-        }
-
-        public void Publish(BrokeredMessage evt)
-        {
             var epTopic = _endpointName + ".events";
 
             var publisher = TopicClient.CreateFromConnectionString(_conn, epTopic);
-            publisher.Send(evt);
+            publisher.Send(packed);
         }
 
         public void Subscribe(string endpoint, string all)
@@ -155,8 +146,8 @@ namespace Shuttle
         {
             var msgPayload = msg.GetBody<String>();
 
-            Info($"Message body: {msgPayload}");
-            Info($"Message id: {msg.MessageId}");
+            Info("Message body: " + msgPayload);
+            Info("Message id: " +msg.MessageId);
 
             var msgType = Type.GetType(msg.Properties["type"].ToString());
             if (msgType == null)
@@ -165,12 +156,18 @@ namespace Shuttle
                 msg.DeadLetter();
             }
 
-            var typedMsg = JsonConvert.DeserializeObject(msgPayload, msgType);
+            if (_messageHandlers.ContainsKey(msgType))
+            {
+                var handler = _messageHandlers[msgType] as Action<object>;
 
-            var handler = _messageHandlers[msgType] as Action<object>;
-
-            if (handler != null)
-                handler(typedMsg);
+                if (handler != null)
+                {
+                    var typedMsg = JsonConvert.DeserializeObject(msgPayload, msgType);
+                    handler(typedMsg);
+                }
+            }
+            else
+                Info("Skipping message " + msgType + " no handler registered.");
         }
 
         private void Info(string text)

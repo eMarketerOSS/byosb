@@ -13,8 +13,18 @@ namespace Shuttle.Scenarious
                 sb1.Start();
                 sb2.Start();
 
-                sb1.Send("ep2", new BrokeredMessage("This is a test message!"));
+                sb1.Send("ep2", new RegisterUser("This is a test message!"));
             }
+        }
+    }
+
+    public class RegisterUser
+    {
+        private readonly string _note;
+
+        public RegisterUser(string note)
+        {
+            _note = note;
         }
     }
 }

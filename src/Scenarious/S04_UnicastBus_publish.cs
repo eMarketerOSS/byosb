@@ -14,8 +14,18 @@ namespace Shuttle.Scenarious
 
                 sb2.Subscribe("ep1", "all");
 
-                sb1.Publish(new BrokeredMessage("This is a test message!"));
+                sb1.Publish(new SampleMessage("This is a test message!"));
             }
+        }
+    }
+
+    internal class SampleMessage
+    {
+        public string Note { get; private set; }
+
+        public SampleMessage(string note)
+        {
+            Note = note;
         }
     }
 }
