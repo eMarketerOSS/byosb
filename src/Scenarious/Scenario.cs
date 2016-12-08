@@ -25,6 +25,7 @@ namespace Shuttle.Scenarious
                 new S04_UnicastBus_publish(), 
                 new S05_UnicastBus_command_handler(), 
                 new S06_UnicastBus_event_handler(), 
+                new S07_UnicastBus_command_routing(), 
             };
 
             RunThemOneByOne(connectionString, scenarios);

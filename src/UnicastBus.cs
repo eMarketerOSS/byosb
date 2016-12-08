@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Configuration;
 using System.Linq.Expressions;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
@@ -16,6 +15,13 @@ namespace Shuttle
         private readonly OnMessageOptions _options = new OnMessageOptions{ AutoComplete = false, AutoRenewTimeout = TimeSpan.FromMinutes(1)};
 
         private readonly ConcurrentDictionary<Type, object> _messageHandlers = new ConcurrentDictionary<Type, object>();
+        private readonly ConcurrentDictionary<string, string> _destinations = new ConcurrentDictionary<string, string>();
+
+        public UnicastBus(string endpointName, string conn, Action<ConcurrentDictionary<string, string>> configureRouter)
+            : this(endpointName, conn)
+        {
+            configureRouter(_destinations);
+        }
 
         public UnicastBus(string endpointName, string conn)
         {
@@ -71,12 +77,62 @@ namespace Shuttle
 
         /* Request Reply */
 
+        public void Send(object msg)
+        {
+            // Routing rule precedence, first match is a hit
+            //      type
+            //      namespace
+            //      assembly
+
+            var type = msg.GetType();
+            var route = string.Empty;
+
+            if (_destinations.ContainsKey(type.Name))
+            {
+                route = _destinations[type.Name];
+                //Debug(">> Route by Name: " + type.Name);
+            }
+
+            if (string.IsNullOrEmpty(route) && _destinations.ContainsKey(type.Namespace))
+            {
+                route = _destinations[type.Namespace];
+                //Debug(">> Route by Namespace: " + type.Namespace);
+            }
+
+            if (string.IsNullOrEmpty(route) && _destinations.ContainsKey(type.Assembly.GetName().Name))
+            {
+                route = _destinations[type.Assembly.GetName().Name];
+                //Debug(">> Route by Assembly: " + type.Assembly.GetName().Name);
+            }
+
+            if (string.IsNullOrEmpty(route))
+                throw new InvalidOperationException("Please set the destination in the config or use explicit send() overload.");
+
+            Send(route, msg);
+        }
+
         public void Send(string destination, object msg)
         {
             var packed = new BrokeredMessage(JsonConvert.SerializeObject(msg));
             packed.Properties["type"] = msg.GetType().FullName;
 
-            var sender = QueueClient.CreateFromConnectionString(_conn, destination);
+            string endpoint;
+            string conn;
+
+            if (destination.IndexOf('@') != -1)
+            {
+                var parts = destination.Split('@');
+                
+                endpoint = parts[0];
+                conn = parts[1];
+            }
+            else
+            {
+                endpoint = destination;
+                conn = _conn;
+            }
+
+            var sender = QueueClient.CreateFromConnectionString(conn, endpoint);
             sender.Send(packed);
         }
 
@@ -146,8 +202,8 @@ namespace Shuttle
         {
             var msgPayload = msg.GetBody<String>();
 
-            Info("Message body: " + msgPayload);
-            Info("Message id: " +msg.MessageId);
+            //Info("Message body: " + msgPayload);
+            //Info("Message id: " +msg.MessageId);
 
             var msgType = Type.GetType(msg.Properties["type"].ToString());
             if (msgType == null)
@@ -171,6 +227,13 @@ namespace Shuttle
         }
 
         private void Info(string text)
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " [" + _endpointName + "] i " + text);
+            Console.ResetColor();
+        }
+
+        private void Debug(string text)
         {
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " [" + _endpointName + "] i " + text);

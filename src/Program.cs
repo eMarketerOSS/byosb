@@ -12,7 +12,7 @@ namespace Shuttle
             Scenario.RunAll(Conn);
             
             //dev flow
-            //Scenario.RunThis<S06_UnicastBus_event_handler>(conn);
+            //Scenario.RunThis<S07_UnicastBus_command_routing>(Conn);
             
             Console.ReadKey();
             
