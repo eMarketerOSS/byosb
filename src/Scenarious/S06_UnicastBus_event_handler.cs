@@ -8,7 +8,7 @@ namespace Shuttle.Scenarious
 
         public class PingHandler
         {
-            public void Handle(RateChanged rateChanged)
+            public void Handle(MessageContext ctx, RateChanged rateChanged)
             {
                 Console.WriteLine("handling rateChanged ...");
             }

@@ -59,6 +59,7 @@
     <Compile Include="Scenarious\S05_UnicastBus_command_handler.cs" />
     <Compile Include="Scenarious\S06_UnicastBus_event_handler.cs" />
     <Compile Include="Scenarious\S07_UnicastBus_command_routing.cs" />
+    <Compile Include="Scenarious\S08_UnicastBus_request_reply.cs" />
     <Compile Include="Scenarious\Scenario.cs" />
     <Compile Include="Scenarious\S01_Queue_send_receive.cs" />
     <Compile Include="Scenarious\S02_Topic_publish_subscribe.cs" />

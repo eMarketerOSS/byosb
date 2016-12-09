@@ -8,7 +8,7 @@ namespace Shuttle.Scenarious
 
         public class ChargeCardHandler
         {
-            public void Handle(ChargeCard chargeCard)
+            public void Handle(MessageContext ctx, ChargeCard chargeCard)
             {
                 Console.WriteLine("Handle chargeCard ...");
             }

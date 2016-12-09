@@ -7,6 +7,11 @@ using Newtonsoft.Json;
 
 namespace Shuttle
 {
+    public class MessageContext
+    {
+        
+    }
+
     public class UnicastBus : IDisposable
     {
         private readonly string _endpointName;
@@ -14,7 +19,7 @@ namespace Shuttle
         private QueueClient _mainQueue;
         private readonly OnMessageOptions _options = new OnMessageOptions{ AutoComplete = false, AutoRenewTimeout = TimeSpan.FromMinutes(1)};
 
-        private readonly ConcurrentDictionary<Type, object> _messageHandlers = new ConcurrentDictionary<Type, object>();
+        private readonly ConcurrentDictionary<Type, Action<MessageContext, object>> _messageHandlers = new ConcurrentDictionary<Type, Action<MessageContext, object>>();
         private readonly ConcurrentDictionary<string, string> _destinations = new ConcurrentDictionary<string, string>();
 
         public UnicastBus(string endpointName, string conn, Action<ConcurrentDictionary<string, string>> configureRouter)
@@ -181,21 +186,12 @@ namespace Shuttle
 
         /* Command and event handling */
 
-        public void RegisterHandler<TCommand>(Action<TCommand> handler) where TCommand : class
+        public void RegisterHandler<TCommand>(Action<MessageContext,TCommand> handler) where TCommand : class
         {
             var name = typeof(TCommand).Name;
             if (name == null) throw new InvalidOperationException("Should not happen");
 
-            _messageHandlers[typeof(TCommand)] = CastArgument<object, TCommand>(x => handler(x));
-        }
-
-        private static Action<TBase> CastArgument<TBase, TDerived>(Expression<Action<TDerived>> source) where TDerived : TBase
-        {
-            if (typeof(TDerived) == typeof(TBase))
-                return (Action<TBase>)((Delegate)source.Compile());
-            var sourceParameter = Expression.Parameter(typeof(TBase), "source");
-            var result = Expression.Lambda<Action<TBase>>(Expression.Invoke(source, Expression.Convert(sourceParameter, typeof(TDerived))), sourceParameter);
-            return result.Compile();
+            _messageHandlers[typeof(TCommand)] = ((context, o) => handler(context, (TCommand)o));
         }
 
         private void TryDispatchMessage(BrokeredMessage msg)
@@ -214,12 +210,14 @@ namespace Shuttle
 
             if (_messageHandlers.ContainsKey(msgType))
             {
-                var handler = _messageHandlers[msgType] as Action<object>;
+                var handler = _messageHandlers[msgType] as Action<MessageContext, object>;
 
                 if (handler != null)
                 {
                     var typedMsg = JsonConvert.DeserializeObject(msgPayload, msgType);
-                    handler(typedMsg);
+                    var ctx = new MessageContext();
+
+                    handler(ctx, typedMsg);
                 }
             }
             else

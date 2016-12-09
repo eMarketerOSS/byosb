@@ -44,9 +44,9 @@ namespace Shuttle.Scenarious
             {
                 hq.Start();
 
-                tcm.RegisterHandler<CallMeAHeavyDutyTruck>(changed => Console.WriteLine(" getting the best truck for you"));
-                cc.RegisterHandler<OrderMorePlastic>(changed => Console.WriteLine(" clients demand more business !!!"));
-                fp.RegisterHandler<CaptureNonStop>(changed => Console.WriteLine(" everybody is on watch, no exceptions "));
+                tcm.RegisterHandler<CallMeAHeavyDutyTruck>((ctx, changed) => Console.WriteLine(" getting the best truck for you"));
+                cc.RegisterHandler<OrderMorePlastic>((ctx, changed) => Console.WriteLine(" clients demand more business !!!"));
+                fp.RegisterHandler<CaptureNonStop>((ctx, changed) => Console.WriteLine(" everybody is on watch, no exceptions "));
 
                 tcm.Start();
                 cc.Start();
