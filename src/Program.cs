@@ -9,10 +9,10 @@ namespace Shuttle
 
         static void Main(string[] args)
         {
-            //Scenario.RunAll(Conn);
+            Scenario.RunAll(Conn);
             
             //dev flow
-            Scenario.RunThis<S08_UnicastBus_request_reply>(Conn);
+            //Scenario.RunThis<S08_UnicastBus_request_reply>(Conn);
             
             Console.ReadKey();
             

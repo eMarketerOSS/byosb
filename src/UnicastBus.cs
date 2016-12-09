@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Linq.Expressions;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
@@ -9,7 +8,12 @@ namespace Shuttle
 {
     public class MessageContext
     {
-        
+        public object Out { get; set; }
+
+        public void Reply(object msg)
+        {
+            Out = msg;
+        }
     }
 
     public class UnicastBus : IDisposable
@@ -120,6 +124,7 @@ namespace Shuttle
         {
             var packed = new BrokeredMessage(JsonConvert.SerializeObject(msg));
             packed.Properties["type"] = msg.GetType().FullName;
+            packed.Properties["from"] = _endpointName + "@" + _conn;
 
             string endpoint;
             string conn;
@@ -148,6 +153,7 @@ namespace Shuttle
         {
             var packed = new BrokeredMessage(JsonConvert.SerializeObject(evt));
             packed.Properties["type"] = evt.GetType().FullName;
+            packed.Properties["from"] = _endpointName + "@" + _conn;
 
             var epTopic = _endpointName + ".events";
 
@@ -218,6 +224,12 @@ namespace Shuttle
                     var ctx = new MessageContext();
 
                     handler(ctx, typedMsg);
+
+                    if (ctx.Out != null)
+                    {
+                        var from = msg.Properties["from"].ToString();
+                        Send(from, ctx.Out);
+                    }
                 }
             }
             else
