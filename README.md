@@ -9,6 +9,7 @@ One `UnicastBus.cs` file will contain the whole bus implementation. It is intend
 * Error Handing
 * Sagas
 * Timeouts
+* Multiple endpoints in the same process
 
 ## Installation
 
