@@ -3,13 +3,12 @@
 One `UnicastBus.cs` file will contain the whole bus implementation. It is intended to be used as a drop-in file to enable unobtrusive messaging in .net apps.
 
 ### Feature target
-* Send/Displtch
-* Publish/Subscribe
 * Routing
+* Publish/Subscribe
 * Request/Replay
+* Error Handing
 * Sagas
 * Timeouts
-* Error Handing
 
 ## Installation
 
