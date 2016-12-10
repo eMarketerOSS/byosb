@@ -11,16 +11,16 @@ One `UnicastBus.cs` file will contain the whole bus implementation. It is intend
 * Timeouts
 * Multiple endpoints in the same process
 
-## Installation
+### Installation
 
 1. Yep, copy/paste `UnicastBus.cs` in your project
 2. `Install-Package WindowsAzure.ServiceBus`
 
-## Development
+### Development
 
 Set in the environment variables `shuttle-sb-connection` with azure service bus connection string.  
 
-## Contributing
+### Contributing
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -28,6 +28,6 @@ Set in the environment variables `shuttle-sb-connection` with azure service bus 
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
-## License
+### License
 
 [Mozilla Public License Version 2.0](https://www.mozilla.org/en-US/MPL/2.0/)
