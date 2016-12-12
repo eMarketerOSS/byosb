@@ -31,3 +31,8 @@ Set in the environment variables `shuttle-sb-connection` with azure service bus 
 ### License
 
 [Mozilla Public License Version 2.0](https://www.mozilla.org/en-US/MPL/2.0/)
+
+
+### Resources
+
+[Atomic transactions](https://github.com/Azure-Samples/azure-servicebus-messaging-samples/tree/master/AtomicTransactions)
