@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.ServiceBus;
 
 namespace Shuttle.Scenarious
 {
@@ -11,6 +12,8 @@ namespace Shuttle.Scenarious
         {
             Id = id;
             Conn = conn;
+
+            
         }
 
         public abstract void Run();
@@ -29,6 +32,7 @@ namespace Shuttle.Scenarious
                 new S08_UnicastBus_request_reply(), 
             };
 
+            ResetEnv(Conn);
             RunThemOneByOne(connectionString, scenarios);
         }
 
@@ -39,6 +43,7 @@ namespace Shuttle.Scenarious
                 Activator.CreateInstance(typeof(T), new object[] { }) as T
             };
 
+            ResetEnv(Conn);
             RunThemOneByOne(connectionString, scenarios);
         }
 
@@ -59,6 +64,23 @@ namespace Shuttle.Scenarious
             }
 
             Console.WriteLine("You can check out the contents with Service Bus Explorer in VS");
+        }
+
+        private static void ResetEnv(string conn)
+        {
+            var manager = NamespaceManager.CreateFromConnectionString(conn);
+
+            foreach (var q in manager.GetQueues())
+            {
+                Console.WriteLine("Drop q " + q.Path);
+                manager.DeleteQueue(q.Path);
+            }
+
+            foreach (var q in manager.GetTopics())
+            {
+                Console.WriteLine("Drop t " + q.Path);
+                manager.DeleteTopic(q.Path);
+            }
         }
     }
 }
