@@ -28,4 +28,10 @@ namespace Shuttle.Scenarious
             Note = note;
         }
     }
+
+    // Topics
+    // Name: OwnerEndpointName + ".event"
+    //  Subscriptions
+    //      Name: SubscriberEndpoint+EventType
+    //          Rule: Sql rule for event type
 }
