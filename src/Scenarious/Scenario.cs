@@ -32,7 +32,7 @@ namespace Shuttle.Scenarious
                 new S08_UnicastBus_request_reply(), 
             };
 
-            ResetEnv(Conn);
+            ResetEnv(connectionString);
             RunThemOneByOne(connectionString, scenarios);
         }
 
@@ -43,7 +43,7 @@ namespace Shuttle.Scenarious
                 Activator.CreateInstance(typeof(T), new object[] { }) as T
             };
 
-            ResetEnv(Conn);
+            ResetEnv(connectionString);
             RunThemOneByOne(connectionString, scenarios);
         }
 

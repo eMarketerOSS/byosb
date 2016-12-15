@@ -161,18 +161,37 @@ namespace Shuttle
             publisher.Send(packed);
         }
 
-        public void Subscribe(string endpoint, string all)
+        public void Subscribe<T>(string endpointConn)
         {
+            string endpoint;
+            string conn;
+
+            if (endpointConn.IndexOf('@') != -1)
+            {
+                var parts = endpointConn.Split('@');
+
+                endpoint = parts[0];
+                conn = parts[1];
+            }
+            else
+            {
+                endpoint = endpointConn;
+                conn = _conn;
+            }
+
             var epTopic = endpoint + ".events";
 
-            var namespaceManager = NamespaceManager.CreateFromConnectionString(_conn);
+            var namespaceManager = NamespaceManager.CreateFromConnectionString(conn);
+            var subscriptionName = _endpointName + "." + typeof (T).Name;
 
-            if (!namespaceManager.SubscriptionExists(epTopic, "all"))
-                namespaceManager.CreateSubscription(epTopic, "all");
+            if (!namespaceManager.SubscriptionExists(epTopic, subscriptionName))
+            {
+                var evtName = typeof(T).FullName;
+                var sqlFilter = new SqlFilter(string.Format("type = '{0}'", evtName));
+                namespaceManager.CreateSubscription(epTopic, subscriptionName, sqlFilter);
+            }
 
-            var subscriber = SubscriptionClient.CreateFromConnectionString(_conn, epTopic, "all");
-
-
+            var subscriber = SubscriptionClient.CreateFromConnectionString(_conn, epTopic, subscriptionName);
             subscriber.OnMessage((message) =>
             {
                 try

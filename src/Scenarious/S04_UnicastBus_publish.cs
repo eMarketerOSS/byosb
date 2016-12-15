@@ -1,4 +1,6 @@
-﻿using Microsoft.ServiceBus.Messaging;
+﻿using System;
+using System.Threading;
+using Microsoft.ServiceBus.Messaging;
 
 namespace Shuttle.Scenarious
 {
@@ -6,26 +8,46 @@ namespace Shuttle.Scenarious
     {
         public override void Run()
         {
-            using (var sb1 = new UnicastBus("ep1", Conn))
-            using (var sb2 = new UnicastBus("ep2", Conn))
+            var bh = new BlueFlagHandler();
+            var rf = new RedFlagHandler();
+
+            using (var pub = new UnicastBus("pub", Conn))
+            using (var sub1 = new UnicastBus("sub1", Conn))
+            using (var sub2 = new UnicastBus("sub2", Conn))
             {
-                sb1.Start();
-                sb2.Start();
+                sub1.RegisterHandler<BlueFlag>(bh.Handle);
+                sub2.RegisterHandler<RedFlag>(rf.Handle);
 
-                sb2.Subscribe("ep1", "all");
+                pub.Start();
+                sub1.Start();
+                sub2.Start();
 
-                sb1.Publish(new SampleMessage("This is a test message!"));
+                sub1.Subscribe<BlueFlag>("pub@" + Conn);
+
+                pub.Publish(new BlueFlag());
+                pub.Publish(new RedFlag());
+
+                Thread.Sleep(1000);
             }
         }
     }
 
-    internal class SampleMessage
-    {
-        public string Note { get; private set; }
+    public class BlueFlag { }
+    public class RedFlag { }
 
-        public SampleMessage(string note)
+    public class BlueFlagHandler
+    {
+        public void Handle(MessageContext ctx, BlueFlag rateChanged)
         {
-            Note = note;
+            Console.WriteLine("handling BlueFlag ...");
+        }
+    }
+
+    public class RedFlagHandler
+    {
+        public void Handle(MessageContext ctx, RedFlag rateChanged)
+        {
+            Console.WriteLine("handling RedFlag ...");
         }
     }
 
