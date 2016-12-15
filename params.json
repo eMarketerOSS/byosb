@@ -1,0 +1,6 @@
+{
+  "name": "Byosb",
+  "tagline": "Build your own serice bus",
+  "body": "# Build your own service bus\r\n\r\nOne `UnicastBus.cs` file will contain the whole bus implementation. It is intended to be used as a drop-in file to enable unobtrusive messaging in .net apps.\r\n\r\n### Feature target\r\n* Routing\r\n* Publish/Subscribe\r\n* Request/Replay\r\n* Error Handing\r\n* Sagas\r\n* Timeouts\r\n* Multiple endpoints in the same process\r\n\r\n### Installation\r\n\r\n1. Yep, copy/paste `UnicastBus.cs` in your project\r\n2. `Install-Package WindowsAzure.ServiceBus`\r\n\r\n### Development\r\n\r\nSet in the environment variables `shuttle-sb-connection` with azure service bus connection string.  \r\n\r\n### Contributing\r\n\r\n1. Fork it!\r\n2. Create your feature branch: `git checkout -b my-new-feature`\r\n3. Commit your changes: `git commit -am 'Add some feature'`\r\n4. Push to the branch: `git push origin my-new-feature`\r\n5. Submit a pull request :D\r\n\r\n### License\r\n\r\n[Mozilla Public License Version 2.0](https://www.mozilla.org/en-US/MPL/2.0/)\r\n\r\n\r\n### Resources\r\n\r\n[Atomic transactions](https://github.com/Azure-Samples/azure-servicebus-messaging-samples/tree/master/AtomicTransactions)\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}

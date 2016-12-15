@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Byosb by ruslander</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Byosb</h1>
+        <p>Build your own serice bus</p>
+
+        <p class="view"><a href="https://github.com/ruslander/byosb">View the Project on GitHub <small>ruslander/byosb</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/ruslander/byosb/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ruslander/byosb/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ruslander/byosb">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="build-your-own-service-bus" class="anchor" href="#build-your-own-service-bus" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Build your own service bus</h1>
+
+<p>One <code>UnicastBus.cs</code> file will contain the whole bus implementation. It is intended to be used as a drop-in file to enable unobtrusive messaging in .net apps.</p>
+
+<h3>
+<a id="feature-target" class="anchor" href="#feature-target" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Feature target</h3>
+
+<ul>
+<li>Routing</li>
+<li>Publish/Subscribe</li>
+<li>Request/Replay</li>
+<li>Error Handing</li>
+<li>Sagas</li>
+<li>Timeouts</li>
+<li>Multiple endpoints in the same process</li>
+</ul>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<ol>
+<li>Yep, copy/paste <code>UnicastBus.cs</code> in your project</li>
+<li><code>Install-Package WindowsAzure.ServiceBus</code></li>
+</ol>
+
+<h3>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development</h3>
+
+<p>Set in the environment variables <code>shuttle-sb-connection</code> with azure service bus connection string.  </p>
+
+<h3>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h3>
+
+<ol>
+<li>Fork it!</li>
+<li>Create your feature branch: <code>git checkout -b my-new-feature</code>
+</li>
+<li>Commit your changes: <code>git commit -am 'Add some feature'</code>
+</li>
+<li>Push to the branch: <code>git push origin my-new-feature</code>
+</li>
+<li>Submit a pull request :D</li>
+</ol>
+
+<h3>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h3>
+
+<p><a href="https://www.mozilla.org/en-US/MPL/2.0/">Mozilla Public License Version 2.0</a></p>
+
+<h3>
+<a id="resources" class="anchor" href="#resources" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Resources</h3>
+
+<p><a href="https://github.com/Azure-Samples/azure-servicebus-messaging-samples/tree/master/AtomicTransactions">Atomic transactions</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/ruslander">ruslander</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
