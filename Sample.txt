@@ -1,0 +1,24 @@
+https://github.com/hibernating-rhinos/rhino-esb/blob/master/Samples/Starbucks/Barista/BaristaSaga.cs
+
+Customer
+	BuyDrink
+		Sends -> NewOrder
+	Handles
+		PaymentDue
+			Replay -> SubmitPayment
+		DrinkReady
+
+Cashier
+	Handles
+		NewOrder
+			Publish -> PrepareDrink
+			Replay -> PaymentDue
+		SubmitPayment
+			Publish -> PaymentComplete
+
+Barista
+	Handles
+		PrepareDrink
+			Pubish -> DrinkReady
+		PaymentComplete	
+			Publish -> DrinkReady
