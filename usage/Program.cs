@@ -1,8 +1,7 @@
 ﻿using System;
-using Microsoft.ServiceBus;
-using Shuttle.Scenarious;
+using usage.Scenarious;
 
-namespace Shuttle
+namespace usage
 {
     class Program
     {
@@ -11,13 +10,11 @@ namespace Shuttle
         static void Main(string[] args)
         {
             //Scenario.RunAll(Conn);
-            
+
             //dev flow
             Scenario.RunThis<S04_UnicastBus_publish>(Conn);
-            
+
             Console.ReadKey();
         }
-
-        
     }
 }

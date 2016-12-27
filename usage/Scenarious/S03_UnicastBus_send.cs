@@ -1,7 +1,8 @@
 ﻿using System;
+using main;
 using Microsoft.ServiceBus.Messaging;
 
-namespace Shuttle.Scenarious
+namespace usage.Scenarious
 {
     class S03_UnicastBus_send : Scenario
     {

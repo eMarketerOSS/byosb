@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shuttle.Scenarious
+namespace usage.Scenarious
 {
     class S06_UnicastBus_event_handler : Scenario
     {

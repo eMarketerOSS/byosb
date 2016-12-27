@@ -3,7 +3,7 @@ using System.Threading;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
-namespace Shuttle.Scenarious
+namespace usage.Scenarious
 {
     class S01_Queue_send_receive : Scenario
     {

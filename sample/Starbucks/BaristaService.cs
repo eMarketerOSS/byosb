@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using main;
 using sample.Starbucks.Starbucks.Messages.Barista;
 using sample.Starbucks.Starbucks.Messages.Cashier;
-using Shuttle;
 
 namespace sample.Starbucks
 {

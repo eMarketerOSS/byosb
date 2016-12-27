@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.ServiceBus;
 
-namespace Shuttle.Scenarious
+namespace usage.Scenarious
 {
     public abstract class Scenario
     {

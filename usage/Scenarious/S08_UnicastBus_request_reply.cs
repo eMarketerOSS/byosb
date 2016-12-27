@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading;
+using main;
 
-namespace Shuttle.Scenarious
+namespace usage.Scenarious
 {
     public class S08_UnicastBus_request_reply : Scenario
     {

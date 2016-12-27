@@ -3,7 +3,7 @@ using System.Threading;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
-namespace Shuttle.Scenarious
+namespace usage.Scenarious
 {
     class S02_Topic_publish_subscribe : Scenario
     {

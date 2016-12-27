@@ -1,6 +1,7 @@
 ﻿using System;
+using main;
 
-namespace Shuttle.Scenarious
+namespace usage.Scenarious
 {
     class S05_UnicastBus_command_handler : Scenario
     {

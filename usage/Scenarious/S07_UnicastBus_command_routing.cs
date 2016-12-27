@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading;
-using Shuttle.Scenarious.CreditCards;
-using Shuttle.Scenarious.FraudPrevention;
-using Shuttle.Scenarious.TreasuryAndCashManagement;
+using main;
+using usage.Scenarious.CreditCards;
+using usage.Scenarious.FraudPrevention;
+using usage.Scenarious.TreasuryAndCashManagement;
 
-namespace Shuttle.Scenarious
+namespace usage.Scenarious
 {
     namespace TreasuryAndCashManagement
     {

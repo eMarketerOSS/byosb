@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading;
+using main;
 using Microsoft.ServiceBus.Messaging;
 
-namespace Shuttle.Scenarious
+namespace usage.Scenarious
 {
     class S04_UnicastBus_publish : Scenario
     {

@@ -4,7 +4,7 @@ using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
 
-namespace Shuttle
+namespace main
 {
     public class MessageContext
     {
