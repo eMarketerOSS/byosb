@@ -224,7 +224,7 @@ namespace main
             var msgPayload = msg.GetBody<String>();
 
             //Info("Message body: " + msgPayload);
-            //Info("Message id: " +msg.MessageId);
+            Info("Dispatch Message id: " +msg.MessageId);
 
             var msgType = Type.GetType(msg.Properties["type"].ToString());
             if (msgType == null)
