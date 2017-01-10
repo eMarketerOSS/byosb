@@ -40,6 +40,8 @@ namespace main
             CreateEndpointQueuesIfNotExists(_endpointName);
             CreateEndpointQueuesIfNotExists(_endpointName + ".error");
 
+            // make all queus to ForwardTo(common error queue)
+
             CreateTopicIfNotExists(_endpointName + ".events");
 
             Info("Initialized");
@@ -125,6 +127,7 @@ namespace main
             var packed = new BrokeredMessage(JsonConvert.SerializeObject(msg));
             packed.Properties["type"] = msg.GetType().FullName;
             packed.Properties["from"] = _endpointName + "@" + _conn;
+
 
             string endpoint;
             string conn;
@@ -226,10 +229,18 @@ namespace main
             //Info("Message body: " + msgPayload);
             Info("Dispatch Message id: " +msg.MessageId);
 
-            var msgType = Type.GetType(msg.Properties["type"].ToString());
+            if (msg.Properties.ContainsKey("type") == false)
+            {
+                Error("Message does not have a [type] header specified, message " + msg.MessageId);
+                msg.DeadLetter(); // has overload to provide reason of falure
+            }
+
+            var typeHeader = msg.Properties["type"];
+            var msgType = Type.GetType(typeHeader.ToString());
+
             if (msgType == null)
             {
-                Error("Message does not have a messagebodytype specified, message " + msg.MessageId);
+                Error("The endpoint is missing the reference to [" + typeHeader + "]");
                 msg.DeadLetter();
             }
 

@@ -62,5 +62,14 @@ namespace acceptance
 
             Thread.Sleep(100);
         }
+
+        public void InjectRawMessage(string ep)
+        {
+            var packed = new BrokeredMessage();
+            var sender = QueueClient.CreateFromConnectionString(_conn, ep);
+            sender.Send(packed);
+
+            Thread.Sleep(100);
+        }
     }
 }
