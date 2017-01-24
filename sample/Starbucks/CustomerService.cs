@@ -6,7 +6,7 @@ using sample.Starbucks.Starbucks.Messages.Cashier;
 
 namespace sample.Starbucks
 {
-    class CustomerService
+    public class CustomerService
     {
         private readonly UnicastBus _bus;
         private ManualResetEvent _wait;

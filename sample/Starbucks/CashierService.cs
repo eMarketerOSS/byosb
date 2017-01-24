@@ -4,7 +4,7 @@ using sample.Starbucks.Starbucks.Messages.Cashier;
 
 namespace sample.Starbucks
 {
-    internal class CashierService
+    public class CashierService
     {
         private readonly UnicastBus _bus;
 

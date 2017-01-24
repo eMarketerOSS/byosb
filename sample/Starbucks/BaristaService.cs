@@ -7,7 +7,7 @@ using sample.Starbucks.Starbucks.Messages.Cashier;
 
 namespace sample.Starbucks
 {
-    internal class BaristaService
+    public class BaristaService
     {
         private readonly UnicastBus _bus;
         private readonly Dictionary<Guid,BaristaState> _states = new Dictionary<Guid, BaristaState>();
