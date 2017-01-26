@@ -1,7 +1,7 @@
 using main;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
-namespace Starbucks.Host
+namespace multiendpoints
 {
     public class WorkerRole : RoleEntryPoint
     {
