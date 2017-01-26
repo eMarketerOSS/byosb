@@ -7,8 +7,13 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 
-namespace Busless
+namespace main
 {
+    public interface IConfiguraThisEndpoint
+    {
+        UnicastBus Configure(CancellationToken token);
+    }
+
     public class UnicastBusWorkerRoleEntrypoint
     {
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();

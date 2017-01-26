@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "main", "main", "{09715BAA-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "host.onpremise", "host.onpemise\host.onpremise.csproj", "{3A28844C-4406-421B-BF34-88C3C0D07A42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "host.workerole.multiendpoints", "host.workerole\host.workerole.multiendpoints.csproj", "{5A18F9F1-5880-44F3-BAA1-A37318C8D8E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{3A28844C-4406-421B-BF34-88C3C0D07A42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A28844C-4406-421B-BF34-88C3C0D07A42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A28844C-4406-421B-BF34-88C3C0D07A42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A18F9F1-5880-44F3-BAA1-A37318C8D8E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A18F9F1-5880-44F3-BAA1-A37318C8D8E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A18F9F1-5880-44F3-BAA1-A37318C8D8E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A18F9F1-5880-44F3-BAA1-A37318C8D8E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
