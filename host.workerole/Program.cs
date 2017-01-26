@@ -32,7 +32,7 @@ namespace Starbucks.Host
         }
     }
 
-    class Program
+    /*class Program
     {
         static void Main(string[] args)
         {
@@ -57,5 +57,5 @@ namespace Starbucks.Host
 
             Console.ReadLine();
         }
-    }
+    }*/
 }
