@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
+using NLog;
 
 namespace main
 {
@@ -25,6 +26,8 @@ namespace main
 
         private readonly ConcurrentDictionary<Type, Action<MessageContext, object>> _messageHandlers = new ConcurrentDictionary<Type, Action<MessageContext, object>>();
         private readonly ConcurrentDictionary<string, string> _destinations = new ConcurrentDictionary<string, string>();
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public UnicastBus(string endpointName, string conn, Action<ConcurrentDictionary<string, string>> configureRouter)
             : this(endpointName, conn)
@@ -222,6 +225,21 @@ namespace main
             _messageHandlers[typeof(TCommand)] = ((context, o) => handler(context, (TCommand)o));
         }
 
+        public static Type GetType(string typeName)
+        {
+            var type = Type.GetType(typeName);
+            if (type != null) return type;
+
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                type = a.GetType(typeName);
+                if (type != null)
+                    return type;
+            }
+
+            return null;
+        }
+
         private void TryDispatchMessage(BrokeredMessage msg)
         {
             var msgPayload = msg.GetBody<String>();
@@ -236,7 +254,7 @@ namespace main
             }
 
             var typeHeader = msg.Properties["type"];
-            var msgType = Type.GetType(typeHeader.ToString());
+            var msgType = GetType(typeHeader.ToString());
 
             if (msgType == null)
             {
@@ -268,23 +286,17 @@ namespace main
 
         private void Info(string text)
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " [" + _endpointName + "] i " + text);
-            Console.ResetColor();
+            Logger.Info(text);
         }
 
         private void Debug(string text)
         {
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " [" + _endpointName + "] i " + text);
-            Console.ResetColor();
+            Logger.Debug(text);
         }
 
         private void Error(string text)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + " [" + _endpointName + "] e " + text);
-            Console.ResetColor();
+            Logger.Error(text);
         }
 
         public void Dispose()

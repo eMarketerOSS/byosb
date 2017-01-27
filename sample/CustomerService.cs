@@ -1,15 +1,18 @@
 using System;
 using System.Threading;
 using main;
-using sample.Starbucks.Starbucks.Messages.Barista;
-using sample.Starbucks.Starbucks.Messages.Cashier;
+using NLog;
+using sample.Messages.Barista;
+using sample.Messages.Cashier;
 
-namespace sample.Starbucks
+namespace sample
 {
     public class CustomerService
     {
         private readonly UnicastBus _bus;
         private ManualResetEvent _wait;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public CustomerService(UnicastBus bus)
         {
@@ -25,7 +28,7 @@ namespace sample.Starbucks
             if (_wait.WaitOne(TimeSpan.FromSeconds(30), false) == false)
                 throw new InvalidOperationException("didn't get my coffee in time");
 
-            Console.WriteLine("Customer: got my coffee, let's go!");
+            Logger.Info("Customer: got my coffee, let's go!");
         }
 
         public void Hadler(MessageContext ctx, PaymentDue message)

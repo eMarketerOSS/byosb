@@ -1,18 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using main;
+using sample;
+using sample.Messages.Barista;
+using sample.Messages.Cashier;
 
-namespace Starbucks.Host
+namespace multiendpoints
 {
     public class ConfigureCustomerEndpoint : IConfiguraThisEndpoint
     {
         public UnicastBus Configure(CancellationToken token)
         {
-            return new UnicastBus("Customer", Environment.GetEnvironmentVariable("shuttle-sb-connection"));
+            var conn = Environment.GetEnvironmentVariable("shuttle-sb-connection");
+            var bus = new UnicastBus("Customer", conn);
+
+            var customer = new CustomerService(bus);
+            bus.RegisterHandler<PaymentDue>(customer.Hadler);
+            bus.RegisterHandler<DrinkReady>(customer.Hadler);
+            bus.Subscribe<DrinkReady>("Barista@" + conn);
+
+            return bus;
         }
     }
 
@@ -20,7 +27,14 @@ namespace Starbucks.Host
     {
         public UnicastBus Configure(CancellationToken token)
         {
-            return new UnicastBus("Cashier", Environment.GetEnvironmentVariable("shuttle-sb-connection"));
+            var conn = Environment.GetEnvironmentVariable("shuttle-sb-connection");
+            var bus = new UnicastBus("Cashier", conn);
+
+            var cashier = new CashierService(bus);
+            bus.RegisterHandler<NewOrder>(cashier.Hadler);
+            bus.RegisterHandler<SubmitPayment>(cashier.Hadler);
+
+            return bus;
         }
     }
 
@@ -28,7 +42,16 @@ namespace Starbucks.Host
     {
         public UnicastBus Configure(CancellationToken token)
         {
-            return new UnicastBus("Barista", Environment.GetEnvironmentVariable("shuttle-sb-connection"));
+            var conn = Environment.GetEnvironmentVariable("shuttle-sb-connection");
+            var bus = new UnicastBus("Barista", conn);
+
+            var barista = new BaristaService(bus);
+            bus.RegisterHandler<PrepareDrink>(barista.Hadler);
+            bus.RegisterHandler<PaymentComplete>(barista.Hadler);
+            bus.Subscribe<PaymentComplete>("Cashier@" + conn);
+            bus.Subscribe<PrepareDrink>("Cashier@" + conn);
+
+            return bus;
         }
     }
 

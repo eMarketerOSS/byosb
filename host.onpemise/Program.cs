@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Threading;
 using main;
-using sample.Starbucks;
-using sample.Starbucks.Starbucks.Messages.Barista;
-using sample.Starbucks.Starbucks.Messages.Cashier;
+using sample;
+using sample.Messages.Barista;
+using sample.Messages.Cashier;
 
-namespace sample
+namespace onpremise
 {
     class Program
     {
@@ -14,28 +13,24 @@ namespace sample
         static void Main(string[] args)
         {
             var customerEndpoint = new UnicastBus(
-                "Starbucks.Customer", 
+                "Customer", 
                 Conn, 
                 router => {
-                    router["NewOrder"] = "Starbucks.Cashier@" + Conn;
+                    router["NewOrder"] = "Cashier@" + Conn;
                 }
             );
 
-            var cashierEndpoint = new UnicastBus("Starbucks.Cashier", Conn);
-            var baristaEndpoint = new UnicastBus("Starbucks.Barista", Conn);
+            var cashierEndpoint = new UnicastBus("Cashier", Conn);
+            var baristaEndpoint = new UnicastBus("Barista", Conn);
             
             using (customerEndpoint)
             using (cashierEndpoint)
             using (baristaEndpoint)
             {
-                customerEndpoint.Start();
-                cashierEndpoint.Start();
-                baristaEndpoint.Start();
-
                 var customer = new CustomerService(customerEndpoint);
                 customerEndpoint.RegisterHandler<PaymentDue>(customer.Hadler);
                 customerEndpoint.RegisterHandler<DrinkReady>(customer.Hadler);
-                customerEndpoint.Subscribe<DrinkReady>("Starbucks.Barista@" + Conn);
+                customerEndpoint.Subscribe<DrinkReady>("Barista@" + Conn);
 
                 var cashier = new CashierService(cashierEndpoint);
                 cashierEndpoint.RegisterHandler<NewOrder>(cashier.Hadler);
@@ -44,8 +39,12 @@ namespace sample
                 var barista = new BaristaService(baristaEndpoint);
                 baristaEndpoint.RegisterHandler<PrepareDrink>(barista.Hadler);
                 baristaEndpoint.RegisterHandler<PaymentComplete>(barista.Hadler);
-                baristaEndpoint.Subscribe<PaymentComplete>("Starbucks.Cashier@" + Conn);
-                baristaEndpoint.Subscribe<PrepareDrink>("Starbucks.Cashier@" + Conn);
+                baristaEndpoint.Subscribe<PaymentComplete>("Cashier@" + Conn);
+                baristaEndpoint.Subscribe<PrepareDrink>("Cashier@" + Conn);
+
+                customerEndpoint.Start();
+                cashierEndpoint.Start();
+                baristaEndpoint.Start();
 
                 customer.BuyDrinkSync();
             }

@@ -1,12 +1,15 @@
 ﻿using System;
 using main;
-using sample.Starbucks.Starbucks.Messages.Cashier;
+using NLog;
+using sample.Messages.Cashier;
 
-namespace sample.Starbucks
+namespace sample
 {
     public class CashierService
     {
         private readonly UnicastBus _bus;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public CashierService(UnicastBus bus)
         {
@@ -15,7 +18,7 @@ namespace sample.Starbucks
 
         public void Hadler(MessageContext ctx, NewOrder message)
         {
-            Console.WriteLine("Cashier: got new order");
+            Logger.Info("Cashier: got new order");
             var correlationId = Guid.NewGuid();
 
             _bus.Publish(new PrepareDrink
@@ -36,7 +39,7 @@ namespace sample.Starbucks
 
         public void Hadler(MessageContext ctx, SubmitPayment message)
         {
-            Console.WriteLine("Cashier: got payment");
+            Logger.Info("Cashier: got payment");
             _bus.Publish(new PaymentComplete
             {
                 CorrelationId = message.CorrelationId
