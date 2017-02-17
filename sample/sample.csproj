@@ -43,6 +43,10 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.1\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -54,17 +58,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\src\UnicastBus.cs">
-      <Link>UnicastBus.cs</Link>
-    </Compile>
-    <Compile Include="Starbucks\BaristaService.cs" />
-    <Compile Include="Starbucks\CashierService.cs" />
-    <Compile Include="Starbucks\CustomerService.cs" />
+    <Compile Include="BaristaService.cs" />
+    <Compile Include="CashierService.cs" />
+    <Compile Include="CustomerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Starbucks\Messages.cs" />
+    <Compile Include="Messages.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sample.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\main.csproj">
+      <Project>{bd5f5359-6453-4f1e-a058-a87aa13c073e}</Project>
+      <Name>main</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

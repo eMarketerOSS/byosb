@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace sample.Starbucks
+namespace sample
 {
     public enum DrinkSize
     {
@@ -9,7 +9,7 @@ namespace sample.Starbucks
         Venti
     }
 
-    namespace Starbucks.Messages.Barista
+    namespace Messages.Barista
     {
         public class DrinkReady
         {
@@ -18,7 +18,7 @@ namespace sample.Starbucks
         }
     }
 
-    namespace Starbucks.Messages.Cashier
+    namespace Messages.Cashier
     {
         public class NewOrder
         {
