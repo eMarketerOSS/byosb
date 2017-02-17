@@ -26,16 +26,29 @@ namespace main
             AppDomain.CurrentDomain.UnhandledException += (CurrentDomainUnhandledException);
         }
 
+        public IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                return e.Types.Where(t => t != null);
+            }
+        }
+
         public void Start()
         {
             ServicePointManager.DefaultConnectionLimit = 12;
             Trace.TraceInformation("BackedHa has been started");
 
             var bin = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.dll")
-                .Select(Assembly.LoadFile);
+                .Select(Assembly.LoadFile)
+                .ToList();
 
             var types = bin
-                .SelectMany(s => s.GetTypes())
+                .SelectMany(GetLoadableTypes)
                 .Where(p => p.GetInterfaces().Contains(typeof(IConfiguraThisEndpoint)));
 
             foreach (var type in types)
