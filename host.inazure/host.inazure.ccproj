@@ -12,6 +12,7 @@
     <AssemblyName>host.inazure</AssemblyName>
     <StartDevelopmentStorage>True</StartDevelopmentStorage>
     <Name>host.inazure</Name>
+    <PackageEnableRemoteDebugger>False</PackageEnableRemoteDebugger>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,7 +38,7 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\host.workerole\host.workerole.multiendpoints.csproj">
+    <ProjectReference Include="..\host.workerole\host.workerole.multiendpoints.csproj">
       <Name>host.workerole.multiendpoints</Name>
       <Project>{5a18f9f1-5880-44f3-baa1-a37318c8d8e5}</Project>
       <Private>True</Private>
@@ -54,8 +55,7 @@
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
-    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
-    <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\2.9\</CloudExtensionsDir>
+    <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v12.0\Windows Azure Tools\2.8\</CloudExtensionsDir>
   </PropertyGroup>
   <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
 </Project>
