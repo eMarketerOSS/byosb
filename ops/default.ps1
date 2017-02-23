@@ -1,4 +1,6 @@
 ﻿
+Framework "4.6"
+
 properties {
   $root = Resolve-Path ..
   $sln = "$root\Dropin.UnicastBus.sln"
