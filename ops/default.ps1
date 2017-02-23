@@ -16,12 +16,6 @@ task Dev {
 
 task Build { 
   
-	exec { msbuild $proj /p:Configuration=Release 
-                        /p:DebugType=None
-                        /p:Platform=AnyCpu
-                        /p:OutputPath=$build\
-                        /p:TargetProfile=Cloud
-                        /t:publish
-                        /verbosity:minimal }
+	exec { msbuild $proj /p:Configuration=Release /p:DebugType=None /p:Platform=AnyCpu /p:OutputPath=$build\ /p:TargetProfile=Cloud /t:publish /verbosity:quiet }
 
 }
