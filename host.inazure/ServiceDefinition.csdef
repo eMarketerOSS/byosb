@@ -2,6 +2,7 @@
 <ServiceDefinition name="host.inazure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2015-04.2.6">
   <WorkerRole name="host.workerole.multiendpoints" vmsize="Small">
     <ConfigurationSettings>
+      <Setting name="shuttle-sb-connection" />
     </ConfigurationSettings>
   </WorkerRole>
 </ServiceDefinition>

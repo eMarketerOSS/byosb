@@ -3,6 +3,7 @@
   <Role name="host.workerole.multiendpoints">
     <Instances count="1" />
     <ConfigurationSettings>
+      <Setting name="shuttle-sb-connection" value="" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

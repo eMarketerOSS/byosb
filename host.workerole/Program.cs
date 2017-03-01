@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using main;
+using Microsoft.Azure;
 using sample;
 using sample.Messages.Barista;
 using sample.Messages.Cashier;
@@ -11,7 +12,7 @@ namespace multiendpoints
     {
         public UnicastBus Configure(CancellationToken token)
         {
-            var conn = Environment.GetEnvironmentVariable("shuttle-sb-connection");
+            var conn = Environment.GetEnvironmentVariable("shuttle-sb-connection") ?? CloudConfigurationManager.GetSetting("shuttle-sb-connection");
             var bus = new UnicastBus("Customer", conn);
 
             var customer = new CustomerService(bus);
@@ -27,7 +28,7 @@ namespace multiendpoints
     {
         public UnicastBus Configure(CancellationToken token)
         {
-            var conn = Environment.GetEnvironmentVariable("shuttle-sb-connection");
+            var conn = Environment.GetEnvironmentVariable("shuttle-sb-connection") ?? CloudConfigurationManager.GetSetting("shuttle-sb-connection");
             var bus = new UnicastBus("Cashier", conn);
 
             var cashier = new CashierService(bus);
@@ -42,7 +43,7 @@ namespace multiendpoints
     {
         public UnicastBus Configure(CancellationToken token)
         {
-            var conn = Environment.GetEnvironmentVariable("shuttle-sb-connection");
+            var conn = Environment.GetEnvironmentVariable("shuttle-sb-connection") ?? CloudConfigurationManager.GetSetting("shuttle-sb-connection");
             var bus = new UnicastBus("Barista", conn);
 
             var barista = new BaristaService(bus);
@@ -54,31 +55,4 @@ namespace multiendpoints
             return bus;
         }
     }
-
-    /*class Program
-    {
-        static void Main(string[] args)
-        {
-            var bin = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.dll")
-                .Select(Assembly.LoadFile)
-                .Union(new List<Assembly>() { Assembly.GetExecutingAssembly() })
-                .ToList();
-
-            var types = bin
-                .SelectMany(s => s.GetTypes())
-                .Where(p => p.GetInterfaces().Contains(typeof(IConfiguraThisEndpoint)))
-                .ToList();
-
-            foreach (var type in types)
-            {
-                Console.WriteLine("Discovered endpoint " + type);
-
-                var ep = (IConfiguraThisEndpoint)Activator.CreateInstance(type);
-                var unicastBus = ep.Configure(CancellationToken.None);
-                unicastBus.Start();
-            }
-
-            Console.ReadLine();
-        }
-    }*/
 }
